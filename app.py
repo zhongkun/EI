@@ -19,7 +19,12 @@ def index(domain):
 
     current_url = "http://{host}/invite/{domain}/".format(host=request.host, domain=domain)
     guest = Guest.query.filter_by(domain=domain).first()
-    print 'guest',guest
+
+    if not guest:
+        return "没有找到这个叫{domain}的人".format(domain = domain)
+
+    guest.scan = 1
+    guest.commit()
     return render_template('index.html', current_url=current_url, guest=guest, host=request.host)
 
 
